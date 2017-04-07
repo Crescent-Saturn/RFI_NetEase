@@ -1,18 +1,22 @@
-import requests as np
-# import urllib
-# import urllib2
+# coding=utf-8
+import re
 
-url = 'https://savoirs.rfi.fr/fr/apprendre-enseigner/langue-fran%C3%A7aise/journal-en-fran%C3%A7ais-facile'
+language = '''''<tr><th>Sex：</th><td>Male</td></tr><tr>'''
 
-rfi_ul = 'http://telechargement.rfi.fr/rfi/francais/audio/jff/201703/journal_francais_facile_20h00_-_20h10_tu_20170307.mp3'
+res_tr = r'<tr>(.*?)</tr>'
+m_tr =  re.findall(res_tr,language,re.S|re.M)
 
-r = np.get(rfi_ul)
+for line in m_tr:
+    print line
 
+    res_th = r'<th>(.*?)</th>'
+    m_th = re.findall(res_th,line,re.S|re.M)
 
-with open('code.mp3','wb') as code:
-    code.write(r.content)
-# print(type(r))
-# print(r.status_code)
-# print(r.encoding)
-# print(r.text)
-# print(r.content)
+    for mm in m_th:
+        print mm
+
+    res_td = r'<td>(.*?)</td>'
+    m_td = re.findall(res_td,line,re.S|re.M)
+
+    for nn in m_td:
+        print nn
