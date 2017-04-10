@@ -2,6 +2,7 @@
 import urllib2
 import re
 import HTMLParser
+import itertools
 
 url = "http://www.quebeccitygasprices.com/"
 
@@ -23,18 +24,21 @@ try:
     for line in main_items:
         pr_pattern = r'<div class="price_num" .*?">(.*?)</div>'
         pr_items = re.findall(pr_pattern, line)
-        for i in pr_items:
-            print i
+#        for i in pr_items:
+#            print i
 
         name_pattern = r'<a .*? onclick=.*?>(.*?)</a>'
         name_items = re.findall(name_pattern, line)
-        for j in name_items:
-            print j
+ #       for j in name_items:
+#            print j
 
         add_pattern = r'<dd>(.*?)</dd>'
         add_items = re.findall(add_pattern, line)
-        for k in add_items:
-            print HTMLParser.HTMLParser().unescape(k)
+#        for k in add_items:
+#            print HTMLParser.HTMLParser().unescape(k)
+
+        for i, j, k, in itertools.izip(pr_items, name_items, add_items):
+            print i, j, HTMLParser.HTMLParser().unescape(k)
 
 except urllib2.URLError, e:
     if hasattr(e, "code"):
