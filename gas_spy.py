@@ -2,46 +2,57 @@
 import urllib2
 import re
 import HTMLParser
-import itertools
+# import itertools
 
-url = "http://www.quebeccitygasprices.com/"
 
-user_agent = 'Mozilla/5.0 (compatible; MSIE 5.5; Windows NT)'
-headers = {'User-Agent': user_agent}
+def getPrice():
+    global pr_items, name_items, add_items
 
-try:
-    request = urllib2.Request(url)
-    response = urllib2.urlopen(request)
-    #print response.read()
+    url = "http://www.quebeccitygasprices.com/"
 
-    content = response.read().decode("utf-8")
+#    user_agent = 'Mozilla/5.0 (compatible; MSIE 5.5; Windows NT)'
+#    headers = {'User-Agent': user_agent}
 
-    main_pattern = r'<tr id=.*?>(.*?)</tr>'
-    # price_pattern = r'<div class="price_num" style="margin-left:12px">(.*?)</div>'
-    # place_pattern_1 = r'<dl class="address">(.*?)</dl>'
-    main_items = re.findall(main_pattern, content, re.S|re.M)
+    try:
+        request = urllib2.Request(url)
+        response = urllib2.urlopen(request)
 
-    for line in main_items:
-        pr_pattern = r'<div class="price_num" .*?">(.*?)</div>'
-        pr_items = re.findall(pr_pattern, line)
-#        for i in pr_items:
-#            print i
+        content = response.read().decode("utf-8")
 
-        name_pattern = r'<a .*? onclick=.*?>(.*?)</a>'
-        name_items = re.findall(name_pattern, line)
- #       for j in name_items:
-#            print j
+        main_pattern = r'<tr id="rrlow_0".*?>(.*?)</tr>'
 
-        add_pattern = r'<dd>(.*?)</dd>'
-        add_items = re.findall(add_pattern, line)
-#        for k in add_items:
-#            print HTMLParser.HTMLParser().unescape(k)
+        main_items = re.findall(main_pattern, content, re.S | re.M)
 
-        for i, j, k, in itertools.izip(pr_items, name_items, add_items):
-            print i, j, HTMLParser.HTMLParser().unescape(k)
+        for line in main_items:
+            # Find the price value
+            pr_pattern = r'<div class="price_num" .*?">(.*?)</div>'
+            pr_items = re.findall(pr_pattern, line)
 
-except urllib2.URLError, e:
-    if hasattr(e, "code"):
-        print e.code
-    if hasattr(e, "reason"):
-        print e.reason
+            # Find the name of gas station
+            name_pattern = r'<a .*? onclick=.*?>(.*?)</a>'
+            name_items = re.findall(name_pattern, line)
+
+            # Find the address
+            add_pattern = r'<dd>(.*?)</dd>'
+            add_items = re.findall(add_pattern, line)
+
+        return pr_items, name_items, add_items
+#        for i, j, k, in itertools.izip(pr_items, name_items, add_items):
+#            print i, j, HTMLParser.HTMLParser().unescape(k)
+
+    except urllib2.URLError, e:
+        if hasattr(e, "code"):
+            print e.code
+        if hasattr(e, "reason"):
+            print e.reason
+
+
+def sendResult():
+    print "The lowest price of gas now is $" + pr_items[0], "at " + name_items[0]
+    print "Its address is", HTMLParser.HTMLParser().unescape(add_items[0])
+
+
+if __name__ == '__main__':
+
+    getPrice()
+    sendResult()
