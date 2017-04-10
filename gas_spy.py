@@ -10,11 +10,11 @@ def getPrice():
 
     url = "http://www.quebeccitygasprices.com/"
 
-#    user_agent = 'Mozilla/5.0 (compatible; MSIE 5.5; Windows NT)'
-#    headers = {'User-Agent': user_agent}
+    user_agent = 'Mozilla/5.0 (compatible; MSIE 5.5; Windows NT)'
+    headers = {'User-Agent': user_agent}
 
     try:
-        request = urllib2.Request(url)
+        request = urllib2.Request(url, headers=headers)
         response = urllib2.urlopen(request)
 
         content = response.read().decode("utf-8")
