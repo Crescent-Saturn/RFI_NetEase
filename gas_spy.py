@@ -1,6 +1,7 @@
 
 import urllib2
 import re
+import HTMLParser
 
 url = "http://www.quebeccitygasprices.com/"
 
@@ -33,7 +34,7 @@ try:
         add_pattern = r'<dd>(.*?)</dd>'
         add_items = re.findall(add_pattern, line)
         for k in add_items:
-            print k
+            print HTMLParser.HTMLParser().unescape(k)
 
 except urllib2.URLError, e:
     if hasattr(e, "code"):
