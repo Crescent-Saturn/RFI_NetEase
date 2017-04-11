@@ -48,11 +48,10 @@ def getPrice():
 
 
 def sendResult():
-    print "The lowest price of gas now is $" + pr_items[0], "at " + name_items[0]
-    print "Its address is", HTMLParser.HTMLParser().unescape(add_items[0])
+    return "The lowest price of gas now is $"+ pr_items[0] + " at " + name_items[0] +"\nIts address is " + HTMLParser.HTMLParser().unescape(add_items[0])
 
 
 if __name__ == '__main__':
 
     getPrice()
-    sendResult()
+    print sendResult()
