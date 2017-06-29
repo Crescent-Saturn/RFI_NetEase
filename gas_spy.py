@@ -1,11 +1,13 @@
 
 import urllib2
 import re
-import HTMLParser
+import HTMLParser       # for remove &amp in string
 # import itertools
+import sched
+import time
 
 
-def getPrice():
+def getPrice(action_time):
     global pr_items, name_items, add_items
 
     url = "http://www.quebeccitygasprices.com/"
@@ -36,9 +38,16 @@ def getPrice():
             add_pattern = r'<dd>(.*?)</dd>'
             add_items = re.findall(add_pattern, line)
 
-        return pr_items, name_items, add_items
+        #return pr_items, name_items, add_items
 #        for i, j, k, in itertools.izip(pr_items, name_items, add_items):
 #            print i, j, HTMLParser.HTMLParser().unescape(k)
+        msg = "The lowest price of gas now (" + time.strftime("%c")+") is $%s" % pr_items[0] + " at " + name_items[0]
+        if name_items[0] != 'Costco':
+            msg = msg + "\nIts address is " + HTMLParser.HTMLParser().unescape(add_items[0])
+        scheduler.enterabs(action_time + 10800, 1, getPrice, (action_time + 10800,))
+
+        print msg
+        return msg
 
     except urllib2.URLError, e:
         if hasattr(e, "code"):
@@ -47,11 +56,17 @@ def getPrice():
             print e.reason
 
 
-def sendResult():
-    return "The lowest price of gas now is $"+ pr_items[0] + " at " + name_items[0] +"\nIts address is " + HTMLParser.HTMLParser().unescape(add_items[0])
+# def sendResult():
+#     return "The lowest price of gas now is $" + pr_items[0] + " at " + name_items[0] +"\nIts address is " + HTMLParser.HTMLParser().unescape(add_items[0])
 
 
 if __name__ == '__main__':
 
-    getPrice()
-    print sendResult()
+    init_time = time.time()
+    scheduler = sched.scheduler(time.time, time.sleep)
+
+#    print getPrice(init_time)
+    scheduler.enterabs(init_time, 1, getPrice, (init_time,))
+    scheduler.run()
+
+#    print sendResult()
