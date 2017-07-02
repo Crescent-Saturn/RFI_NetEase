@@ -2,13 +2,10 @@
 import requests
 import re
 import html       # for remove &amp in string
-import sched
 import time
 
-from wxpy import *
 
-
-def getPrice(action_time):
+def getPrice():
     global pr_items, name_items, add_items
 
     url = "http://www.quebeccitygasprices.com/"
@@ -19,8 +16,6 @@ def getPrice(action_time):
     try:
         request = requests.get(url, headers=headers)
         content = request.text
-
-        # content = response.read().decode("utf-8")
 
         main_pattern = r'<tr id="rrlow_0".*?>(.*?)</tr>'
 
@@ -40,15 +35,13 @@ def getPrice(action_time):
             add_items = re.findall(add_pattern, line)
 
         msg = "The lowest gas price now (" + time.ctime() + ") is $%s" % pr_items[0] + " at " + name_items[0]
-        # ads = "\nIts address is " + html.unescape(add_items[0])
 
         if name_items[0] != 'Costco':
             msg = msg + "\nIts address is " + html.unescape(add_items[0])
-        scheduler.enterabs(action_time + 6*3600, 1, getPrice, (action_time + 6*3600,))
 
-        print(msg)
-        bot.self.send(msg)
-        # return msg
+        # print(msg)
+        # bot.self.send(msg)
+        return msg
 
     except requests.HTTPError as e:
         if hasattr(e, "code"):
@@ -59,12 +52,4 @@ def getPrice(action_time):
 
 if __name__ == '__main__':
 
-    bot = Bot()
-    init_time = time.time()
-    scheduler = sched.scheduler(time.time, time.sleep)
-
-#    print getPrice(init_time)
-    scheduler.enterabs(init_time, 1, getPrice, (init_time,))
-    scheduler.run()
-
-#    print sendResult()
+    print(getPrice())
