@@ -21,7 +21,7 @@ def getQB():
 
         content = response.read().decode("utf-8")
 
-        main_pattern = r'<div class="article block untagged mb15".*?title="(.*?)">.*?<div class="content">(.*?)</div>'
+        main_pattern = r'<div class="article block untagged mb15".*?title=".*?">.*?<div class="content">(.*?)</div>'
 
         main_items = re.findall(main_pattern, content, re.S)
 
