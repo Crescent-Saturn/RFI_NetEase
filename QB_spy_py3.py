@@ -19,12 +19,11 @@ def getQB():
 
         main_items = re.findall(main_pattern, content, re.S)
 
-
-
-        msg = random.choice(main_items)
-
-        print(msg)
-        return msg
+        for item in main_items:
+            Img = re.search("img", item)
+            if Img:
+                del item
+        return main_items
 
     except requests.HTTPError as e:
         if hasattr(e, "code"):
