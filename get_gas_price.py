@@ -3,6 +3,7 @@ import requests
 import re
 import html       # for remove &amp in string
 import time
+import random
 
 
 def getPrice():
@@ -10,7 +11,12 @@ def getPrice():
 
     url = "http://www.quebeccitygasprices.com/"
 
-    user_agent = 'Mozilla/5.0 (compatible; MSIE 5.5; Windows NT)'
+    agents = ['Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0;',
+              'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv,2.0.1) Gecko/20100101 Firefox/4.0.1',
+              'Opera/9.80 (Macintosh; Intel Mac OS X 10.6.8; U; en) Presto/2.8.131 Version/11.11',
+              'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.56 Safari/535.11',
+              'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; 360SE)']
+    user_agent = random.choice(agents)
     headers = {'User-Agent': user_agent}
 
     try:
@@ -40,7 +46,6 @@ def getPrice():
             msg = msg + "\nIts address is " + html.unescape(add_items[0])
 
         # print(msg)
-        # bot.self.send(msg)
         return msg
 
     except requests.HTTPError as e:
