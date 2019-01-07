@@ -18,7 +18,7 @@ fr_list = bot.friends()
 
 
 # me = fr_list[0]
-# me.send(f'亲爱的{me.name}，' + msg + '\n 雷磊')
+
 # print(fr_list)
 
 for friend in new_list:
