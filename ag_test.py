@@ -11,7 +11,7 @@ w, h = ag.size()
 
 
 def initial_click():
-    global h, w
+    # global h, w
     ag.click(x=w / 3, y=h / 15)
 
     ag.click()
@@ -28,13 +28,16 @@ def initial_click():
 
 
 def auto_bing(words):
-    global h, w
-    ag.click(x=w / 3, y=h / 5)
+    # global h, w
+    ag.click(x=w / 3, y=150)
 
-    ag.click()
+    # ag.click()
+    time.sleep(0.01)
     ag.doubleClick()
+    # ag.click()
 
-    ag.typewrite(words, 0.1)
+    # ag.press('enter')
+    ag.typewrite(words, 0.08)
     ag.press('enter')
     time.sleep(0.8)
 
@@ -46,6 +49,9 @@ def auto_bing(words):
 
 if __name__ == '__main__':
     initial_click()
+    # print(ag.size())
+    # auto_bing("words")
+
     # ag.click(x=w / 3, y=h / 5)
     # words = "Bing is a web search engine owned and operated by Microsoft. The service has its origins in Microsoft's previous search engines: MSN Search, Windows Live Search and later Live Search. Bing provides a variety of search services, including web, video, image and map search products. Python is an interpreted, high-level, general-purpose programming language. Created by Guido van Rossum and first released in 1991, Python has a design philosophy that emphasizes code readability, notably using significant whitespace. "
     # for word in words.split():
