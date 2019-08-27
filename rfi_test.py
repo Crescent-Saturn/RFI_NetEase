@@ -1,5 +1,5 @@
 import requests
-# from datetime import datetime
+from datetime import date
 import sys
 
 url_base = 'http://telechargement.rfi.fr/rfi/francais/audio/jff/'
@@ -13,8 +13,12 @@ url_spe = 'http://telechargement.rfi.fr/savoirs/apprendre/actu/jff/jff_'
 
 # url_time_m = dt.strftime("%Y%m")
 # url_time_d = dt.strftime("%Y%m%d")
-url_date = sys.argv[1]
 
+if len(sys.argv) > 1:
+    url_date = sys.argv[1]
+else:
+    url_date = date.today().strftime("%Y%m%d")
+	
 url_month = url_date[:-2]
 url_news = 'journal_francais_facile_20h00_-_20h10_tu_'
 
